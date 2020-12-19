@@ -4,10 +4,10 @@
 #include <string>
 
 struct Estudante {
-  std::string _nome;
-  int _matricula;
-  float _notas[5];
-  
+  std::string nome;
+  int matricula;
+  float notas[5];
+
   float calcularRSG();
 };
 
