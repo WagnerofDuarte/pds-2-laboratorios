@@ -31,6 +31,7 @@ class Queue {
     
     // Retorna o número de elementos na fila.
     int count() const;
+    
   private:
     Node* front_;    
     Node* back_;
