@@ -1,4 +1,10 @@
 #include <iostream>
+#include <algorithm>
+#include <vector>
+
+class IndiceNaoInicializado{};
+class IndiceNegativo{};
+class IndiceMaiorQueArranjo{};
 
 template <class T, int N> class BoundedArray {
   public:
@@ -13,21 +19,68 @@ template <class T, int N> class BoundedArray {
 };
 
 template <class T> void testArray() {
+
+  std::vector<int> posicoesUsadas;
+
   BoundedArray<T, 8> a;
   char action;
   while (std::cin >> action) {
+
     int index;
     std::cin >> index;
+
+    //para aqui
+    
     try {
+
       if (action == 's') {
-        T value;
-        std::cin >> value;
-        a.set(index, value);
+
+          T value;
+          std::cin >> value;
+
+          //check aqui
+          if(index > 7 ){
+
+            throw IndiceMaiorQueArranjo();
+
+          } else if(index < 0){
+
+            throw IndiceNegativo();
+
+          } else {
+
+            a.set(index, value);
+            posicoesUsadas.push_back(index);
+
+          }
+
       } else if (action == 'g') {
-        std::cout << a.get(index) << std::endl;
+        
+        if(std::find(posicoesUsadas.begin(), posicoesUsadas.end(), index) != posicoesUsadas.end()){
+            
+          std::cout << a.get(index) << std::endl;
+
+        } else if (index > 7 ){
+
+            throw IndiceMaiorQueArranjo();
+
+          } else if(index < 0){
+
+            throw IndiceNegativo();
+
+          } else {
+
+          throw IndiceNaoInicializado();
+
+        }
       }
-    } catch (...) {
-      std::cerr << "Erro desconhecido." << std::endl;
+      
+    } catch (IndiceNaoInicializado a){
+      std::cerr << "Erro: indice nao inicializado." << std::endl;
+    } catch (IndiceNegativo a){
+      std::cerr << "Erro: indice negativo." << std::endl;
+    } catch (IndiceMaiorQueArranjo a){
+      std::cerr << "Erro: indice maior que arranjo." << std::endl;
     }
   }
 }
