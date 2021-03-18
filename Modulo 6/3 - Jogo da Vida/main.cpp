@@ -8,7 +8,7 @@ using std::cerr;
 using std::cin;
 using std::cout;
 using std::endl;
-using namespace std::chrono_literals;
+using namespace std::literals::chrono_literals;
 
 void Print(const GameOfLife& g) {
   cout << "  "; 
@@ -41,15 +41,32 @@ using namespace std;
 
 int main() {
   // Lê os dados.
+  int linhas, colunas;
   int iterations;
   cin >> iterations;
   int line, column;
-  cin >> line >> column;
-  GameOfLife g(line, column);
+  cin >> linhas >> colunas;
+  GameOfLife g(linhas, colunas);
   while (cin >> line) {
+
     cin >> column;
-    g.Enliven(line, column);
+
+    try{
+
+      if(line < 0 || line >= linhas || column < 0 || column >= colunas){
+        throw GameOfLife::InvalidCellException();
+      } else {
+        g.Enliven(line, column);
+      }
+
+    } catch (GameOfLife::InvalidCellException e) {
+
+      cerr << "As coordenadas [" << line << ", " << column << "] não são de uma célula válida" << endl;
+      return 1;
+
+    }
   }
+
   Print(g);
     
   // Executa o número esperado de iterações.
