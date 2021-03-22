@@ -55,16 +55,43 @@ TEST_CASE("Tests GameOfLife::Kill(int i, int j)") {
 }
 
 TEST_CASE("Tests GameOfLife::operator++(int)") {
-  // IMPLEMENTAR
-  //
-  // A estrutura do seu teste deve ter as seguintes etapas:
-  // (i) Preparar: Crie dois objetos da classe GameOfLife ambos de tamanho 5x5,
-  // onde o primeiro representa uma matriz não trivial,
-  // e o segundo representa a matriz esperada para a iteração seguinte.
-  // (ii) Exercitar:  Executa o operador ++ no primeiro objeto.
-  // (iii) Verificar:  Verifica se, após o passo anterior, o estado de cada
-  // célula do primeiro objeto é igual ao da célula correspondente do segundo.
-  CHECK(false);
+  
+  GameOfLife matrizA(5,5);
+  GameOfLife matrizB(5,5);
+
+  for(int i=0;i<5;i++){
+    for(int j=0;j<5;j++){
+      if((i<3 && j>1) || (i>2 && j<1)){
+        matrizA.Enliven(i,j);
+        CHECK(matrizA.alive(i,j));
+      } else {
+        matrizA.Kill(i,j);
+        CHECK_FALSE(matrizA.alive(i,j));
+      }
+    }
+  }
+
+  for(int i=0;i<5;i++){
+    for(int j=0;j<5;j++){
+      if((j<2) || (j==3 && i>2)){
+        matrizB.Enliven(i,j);
+        CHECK(matrizB.alive(i,j));
+      } else {
+        matrizB.Kill(i,j);
+        CHECK_FALSE(matrizB.alive(i,j));
+      }
+    }
+  }
+
+  matrizA++;
+
+  for(int i = 0; i < 5; i++){
+    for(int j = 0; i < 5; i++){
+      CHECK(matrizA.alive(i,j) == matrizB.alive(i,j));
+      //CHECK(matrizB.alive(i,j) == matrizA.alive(i,j));
+    }
+  }
+
 }
 
 TEST_CASE("Test the throwing of GameOfLife::OutOfBoundException") {
